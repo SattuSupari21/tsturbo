@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to My Web Server</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        h1 {
+            color: #007BFF;
+        }
+        p {
+            font-size: 1.2rem;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+        }
+        footer {
+            margin-top: 50px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to TsTurbo!</h1>
+    <p>This is a minimal HTML page served by TsTurbo.</p>
+    <p>Explore the available routes:</p>
+    <ul>
+        <li><strong>/</strong> - Returns a simple "Hello, World!" message.</li>
+        <li><strong>/echo/</strong> - Sends back the data received in the request body.</li>
+        <li><strong>/welcome</strong> - Displays this welcome page.</li>
+        <li><strong>/files/{filename}</strong> - Serves static files from the server.</li>
+    </ul>
+    <footer>
+        <p>&copy; 2025 My Web Server Project</p>
+    </footer>
+</body>
+</html>

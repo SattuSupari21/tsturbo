@@ -181,6 +181,7 @@ function parseRequestLine(line: Buffer) {
 }
 
 function validateHeader(h: Buffer) {
+  const validHeaderRegex = /^[a-zA-Z0-9!#$%&'*+.^_`|~-]+$/;
   const possibleHeaders = [
     "Accept",
     "Accept-Charset",
@@ -210,7 +211,7 @@ function validateHeader(h: Buffer) {
     "",
   ];
   const header = h.toString().split(":")[0]; // get the key(header name) from key:value header format
-  if (possibleHeaders.includes(header)) {
+  if (possibleHeaders.includes(header) || validHeaderRegex.test(header)) {
     return true;
   } else {
     return false;
@@ -325,7 +326,7 @@ async function bufExpectMore(conn: TCPConn, buf: DynBuf): Promise<void> {
 
 // decode the chunked encoding and yield the data on the fly
 async function* readChunks(conn: TCPConn, buf: DynBuf): BufferGenerator {
-  for (let last = false; !last; ) {
+  for (let last = false; !last;) {
     // read the chunk-size line
     const idx = buf.data.subarray(0, buf.length).indexOf("\r\n");
     if (idx < 0) {
@@ -614,6 +615,8 @@ async function handleReq(req: HTTPReq, body: BodyReader): Promise<HTTPRes> {
     // serve files from the current working directory
     // FIXME: prevent escaping by ".."
     return await serveStaticFile(req, uri.substr("/files/".length));
+  } else if (uri === "/welcome") {
+    return await serveStaticFile(req, "welcome.html")
   } else {
     resp = readerFromMemory(Buffer.from("hello world.\n"));
   }
@@ -680,7 +683,7 @@ async function writeHTTPHeader(conn: TCPConn, resp: HTTPRes): Promise<void> {
 async function writeHTTPBody(conn: TCPConn, resp: HTTPRes): Promise<void> {
   // write the body
   const crlf = Buffer.from("\r\n");
-  for (let last = false; !last; ) {
+  for (let last = false; !last;) {
     let data = await resp.body.read();
     last = data.length === 0; //  ended?
     if (resp.body.length < 0) {
