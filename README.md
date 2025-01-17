@@ -38,6 +38,7 @@ The server will start running on `http://127.0.0.1:1234`.
 - `/`: Root path, serves a simple "hello world" message.
 - `/echo/`: Echoes back the request body.
 - `/files/{filename}`: Serves files from the server's filesystem. Supports **HTTP Range Requests** for partial file delivery.
+- `/welcome`: Displays a welcome page.
 
 ## Usage
 
